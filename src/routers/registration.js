@@ -8,9 +8,7 @@ const {sendSms} =require("../services/service");
 router.post("/registration",async(req,res)=>{
   try{
     let body=req.body;
-    let otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
-    let obj={...body,otp:otp};
-    let data=new Registration(obj);
+    let data=new Registration(body);
     let data1=await data.save();
     res.json({status:true,msg:"Registered"});
   }catch(err){
@@ -24,6 +22,7 @@ router.post("/login",async(req,res)=>{
       let user= await Registration.findOne({contact:body.contact});
       if(user){
         let otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
+        await Registration.findByIdAndUpdate({_id: user._id}, { otp: otp });
         sendSms(otp,body.contact);
         res.send({status:true,msg:"OTP Sent"});
       }else{

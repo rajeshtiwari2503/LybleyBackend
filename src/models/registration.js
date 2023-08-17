@@ -6,7 +6,7 @@ const registrationSchema=new mongoose.Schema({
     unit:{type:Number,required:true},
     email:{type:String,required:true},
     contact:{type:Number,required:true},
-    otp:{type:String,required:true}
+    otp:{type:String}
 })
 
 const RegistrationModel=new mongoose.model("Registration",registrationSchema);
