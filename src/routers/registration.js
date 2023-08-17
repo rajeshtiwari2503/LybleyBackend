@@ -2,7 +2,7 @@ const express=require("express");
 const router= express.Router();
 const Registration = require("../models/registration");
 const otpGenerator = require('otp-generator');
-const {sendSms} =require("../services/service");
+const {smsSend} =require("../services/service");
 
 
 router.post("/registration",async(req,res)=>{
@@ -23,8 +23,8 @@ router.post("/login",async(req,res)=>{
       if(user){
         let otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
         await Registration.findByIdAndUpdate({_id: user._id}, { otp: otp });
-        sendSms(otp,body.contact);
-        res.send({status:true,msg:"OTP Sent"});
+        smsSend(otp,body.contact);
+        res.json({status:true,msg:"OTP Sent"});
       }else{
       res.status(404).send({status:false,msg:"Incorrect Mobile Number"});
       }
