@@ -7,7 +7,7 @@ const registrationSchema=new mongoose.Schema({
     email:{type:String,required:true},
     contact:{type:Number,required:true},
     otp:{type:String}
-})
+},{timestamps})
 
 const RegistrationModel=new mongoose.model("Registration",registrationSchema);
 
