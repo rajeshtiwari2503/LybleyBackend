@@ -36,7 +36,7 @@ router.post("/login",async(req,res)=>{
 router.post("/otpPhoneVerification", async (req, res) => {
   try {
       let body = req.body;
-      let user = await UserModel.findOne({otp: body.otp });
+      let user = await Registration.findOne({otp: body.otp });
       if (user) {
           res.json({ status: true, user: user, msg: "Logged in successful" });
       } else {
