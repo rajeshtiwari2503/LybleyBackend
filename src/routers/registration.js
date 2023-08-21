@@ -13,7 +13,7 @@ router.post("/registration",async(req,res)=>{
     res.json({status:true,msg:"Registered"});
   }catch(err){
     res.status(400).send(err);
-  }
+  }                                                             
 });
 
 router.post("/login",async(req,res)=>{
@@ -44,6 +44,43 @@ router.post("/otpPhoneVerification", async (req, res) => {
       }
   } catch (err) {
       res.status(500).send(err);
+  }
+});
+
+router.get("/getAllUsers",async(req,res)=>{
+   try{
+    let user = await Registration.find({});
+    res.send(user);
+   }catch(err){
+    res.status(400).send(err);
+   }
+});
+
+router.delete("/deleteUser/:id",async(req,res)=>{
+  try{
+   let _id=req.params.id;
+   let user = await Registration.findByIdAndDelete(_id);
+   if(user){
+   res.json({status:true,msg:"Deleted"});
+   }else{
+    res.status(404).send("Not found");
+   }
+  }catch(err){
+   res.status(500).send(err);
+  }
+});
+
+router.get("/getUserBy/:id",async(req,res)=>{
+  try{
+   let _id=req.params.id;
+   let user = await Registration.findById(_id);
+   if(user){
+   res.send(user);
+   }else{
+    res.status(404).send("Not found");
+   }
+  }catch(err){
+   res.status(400).send(err);
   }
 });
 
