@@ -43,4 +43,15 @@ router.delete("/deletePlan/:id",async(req,res)=>{
    }
 })
 
+router.patch("/updatePlan/:id",async(req,res)=>{
+   try{
+      let _id=req.params.id;
+      let body=req.body;
+      let data=await Plan.findByIdAndUpdate(_id,body);
+      res.json({status:true,msg:"Updated"});
+   }catch(err){
+      res.status(500).send(err);
+   }
+})
+
 module.exports=router;
