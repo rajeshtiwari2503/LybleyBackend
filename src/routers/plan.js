@@ -33,4 +33,14 @@ router.get("/getPlanBy/:id",async(req,res)=>{
    }
 })
 
+router.delete("/deletePlan/:id",async(req,res)=>{
+   try{
+      let _id=req.params.id;
+      let data=await Plan.findByIdAndDelete(_id);
+      res.json({status:true,msg:"Deteled"});
+   }catch(err){
+      res.status(500).send(err);
+   }
+})
+
 module.exports=router;
