@@ -7,7 +7,7 @@ router.post("/addPlan",async(req,res)=>{
     try{
        let body=req.body;
        let data=new Plan(body);
-       let data1=await data1.save();
+       let data1=await data.save();
        res.json({status:true,msg:"Plan added"});
     }catch(err){
      res.status(400).send(err);
@@ -21,6 +21,16 @@ router.get("/getPlans",async(req,res)=>{
     }catch(err){
        res.status(400).send(err);
     }
+})
+
+router.get("/getPlanBy/:id",async(req,res)=>{
+   try{
+      let _id=req.params.id;
+      let data=await Plan.findById(_id);
+      res.send(data);
+   }catch(err){
+      res.status(400).send(err);
+   }
 })
 
 module.exports=router;
