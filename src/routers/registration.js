@@ -3,14 +3,26 @@ const router = express.Router();
 const Registration = require("../models/registration");
 const otpGenerator = require('otp-generator');
 const { smsSend } = require("../services/service");
+const Subscription = require("../models/subscribedPlan");
 
 
 router.post("/registration", async (req, res) => {
   try {
     let body = req.body;
-    let data = new Registration(body);
-    let data1 = await data.save();
-    res.json({ status: true, msg: "Registered" });
+    let body1 = { name: body.name, contact: body.contact, email: body.email };
+    let user = await Registration.findOne({ contact: body.contact });
+    if (user) {
+      let subBody = { ...body, userId: user?._id };
+      let subBody1 = new Subscription(subBody);
+      await subBody1.save();
+    } else {
+      let data = new Registration(body1);
+      let data1 = await data.save();
+      let subBody = { ...body, userId: data1?._id };
+      let subBody1 = new Subscription(subBody);
+      await subBody1.save();
+    }
+    res.json({ status: true, msg: "Plan Subscribed" });
   } catch (err) {
     res.status(400).send(err);
   }
