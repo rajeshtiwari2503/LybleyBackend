@@ -7,6 +7,7 @@ const servicerRegistrationSchema=new mongoose.Schema({
     yearOfStartBusniess:{type:String},
     servicerWebsite:{type:String},
     betterBusinessBureauReviewPage:{type:String},
+    otp:{type:String}
 },{timestamps:true})
 
 const servicerRegistrationModel=new mongoose.model("servicerRegistration",servicerRegistrationSchema);
