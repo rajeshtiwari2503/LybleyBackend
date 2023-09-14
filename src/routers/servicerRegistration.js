@@ -29,6 +29,23 @@ router.post("/login", async (req, res) => {
      res.status(400).send(err);
    }
  });
+
+ router.post("/loginMobile", async (req, res) => {
+   try {
+     let body = req.body;
+     let user = await servicerRegistration.findOne({ businessPhone: body.contact });
+     if (user) {
+       let otp = otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
+       await servicerRegistration.findByIdAndUpdate({ _id: user._id }, { otp: otp });
+       smsSend(otp, body.contact);
+       res.json({ status: true, msg: "OTP Sent" });
+     } else {
+       res.status(404).send({ status: false, msg: "Incorrect Mobile Number" });
+     }
+   } catch (err) {
+     res.status(400).send(err);
+   }
+ });
  
  router.post("/otpPhoneVerification", async (req, res) => {
    try {
