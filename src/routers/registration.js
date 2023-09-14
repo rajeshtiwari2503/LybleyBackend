@@ -28,7 +28,7 @@ router.post("/registration", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/ghjkl;", async (req, res) => {
   try {
     let body = req.body;
     let user = await Registration.findOne({ contact: body.contact });
