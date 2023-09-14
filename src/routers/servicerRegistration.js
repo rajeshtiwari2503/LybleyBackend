@@ -1,6 +1,9 @@
 const express=require("express");
 const router= express.Router();
 const servicerRegistration=require("../models/servicerRegistratin");
+const otpGenerator = require('otp-generator');
+const registration=require("../models/registration");
+const {smsSend} = require("../services/service");
 
 router.post("/servicerRegistration",async(req,res)=>{
      try{
@@ -16,9 +19,36 @@ router.post("/servicerRegistration",async(req,res)=>{
 router.post("/login", async (req, res) => {
    try {
      let body = req.body;
-     let user = await servicerRegistration.findOne({ businessPhone: body.contact });
+     let servicer = await servicerRegistration.findOne({ businessPhone: body.contact });
+     if (servicer) {
+       let otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
+       await servicerRegistration.findByIdAndUpdate({ _id: servicer._id }, { otp: otp });
+       smsSend(otp, body.contact);
+       return res.json({ status: true, msg: "OTP Sent" });
+     }
+
+     let user = await registration.findOne({ contact: body.contact });
+     
      if (user) {
        let otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
+       await registration.findByIdAndUpdate({ _id: user._id }, { otp: otp });
+       smsSend(otp, body.contact);
+       return res.json({ status: true, msg: "OTP Sent" });
+     }
+     
+     return res.status(404).send({ status: false, msg: "Incorrect Mobile Number" });
+     
+   } catch (err) {
+     res.status(400).send(err);
+   }
+ });
+
+ router.post("/loginMobile", async (req, res) => {
+   try {
+     let body = req.body;
+     let user = await servicerRegistration.findOne({ businessPhone: body.contact });
+     if (user) {
+       let otp = otpGenerator.generate(4, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
        await servicerRegistration.findByIdAndUpdate({ _id: user._id }, { otp: otp });
        smsSend(otp, body.contact);
        res.json({ status: true, msg: "OTP Sent" });
