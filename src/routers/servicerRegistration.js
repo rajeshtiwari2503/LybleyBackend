@@ -63,12 +63,18 @@ router.post("/login", async (req, res) => {
  router.post("/otpPhoneVerification", async (req, res) => {
    try {
      let body = req.body;
-     let user = await servicerRegistration.findOne({ otp: body.otp });
-     if (user) {
-       res.json({ status: true, user: user, msg: "Logged in successful" });
-     } else {
-       res.status(404).send({ status: false, msg: "Incorrect OTP" });
+     let servicer = await servicerRegistration.findOne({ otp: body.otp });
+     if (servicer) {
+        return res.json({ status: true, user: servicer, msg: "Logged in successful" });
+     } 
+       
+     let user = await registration.findOne({ otp: body.otp });
+     if(user){
+      return res.json({ status: true, user: user, msg: "Logged in successful" });
      }
+
+     return res.status(404).send({ status: false, msg: "Incorrect OTP" });
+     
    } catch (err) {
      res.status(500).send(err);
    }
