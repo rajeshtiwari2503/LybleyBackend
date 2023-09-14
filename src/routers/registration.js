@@ -45,7 +45,7 @@ router.post("/ghjkl;", async (req, res) => {
   }
 });
 
-router.post("/otpPhoneVerification", async (req, res) => {
+router.post("/otpPhoneVerification12345", async (req, res) => {
   try {
     let body = req.body;
     let user = await Registration.findOne({ otp: body.otp });
