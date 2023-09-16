@@ -9,6 +9,7 @@ const subscribedPlanSchema=new mongoose.Schema({
    unit:{type:Number},
    homeSize:{type:Number},
    planName:{type:String},
+   planDetail:{type:Object},
    planPrice:{type:Number},
    realEstateAgentName:{type:String},
    closingDate:{type:String},
