@@ -7,6 +7,7 @@ const servicerRegistrationSchema=new mongoose.Schema({
     yearOfStartBusniess:{type:String},
     servicerWebsite:{type:String},
     betterBusinessBureauReviewPage:{type:String},
+    role:{type:String,default:"TECHNICIAN"},
     otp:{type:String}
 },{timestamps:true})
 
