@@ -35,7 +35,7 @@ router.get("/getComplaintBy/:id",async(req,res)=>{
 router.get("/getComplaintByUser/:id",async(req,res)=>{
     try{
      let id=req.params.id;
-     let data=await Complaint.findOne({userId:id});
+     let data=await Complaint.find({userId:id});
      res.send(data);
     }catch(err){
      res.status(400).send(err);
