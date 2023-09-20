@@ -4,6 +4,7 @@ const Plan = require("../models/plans");
 const Registration=require("../models/registration");
 const Servicer=require("../models/servicerRegistratin");
 const SubscribedPlan=require("../models/subscribedPlan");
+const Complaint=require("../models/complaint");
 
 router.get("/dashboardDetail",async(req,res)=>{
      try{
@@ -11,7 +12,8 @@ router.get("/dashboardDetail",async(req,res)=>{
         let users= await Registration.countDocuments().exec();
         let servicer= await Servicer.countDocuments().exec();
         let subscribedPlan= await SubscribedPlan.countDocuments().exec();
-        res.json({plans:plans,users:users,servicer:servicer,subscribedPlan:subscribedPlan});
+        let complaint=await Complaint.countDocuments().exec();
+        res.json({plans:plans,users:users,servicer:servicer,subscribedPlan:subscribedPlan,complaint:complaint});
      }catch(err){
         res.status(400).send(err);
      }
